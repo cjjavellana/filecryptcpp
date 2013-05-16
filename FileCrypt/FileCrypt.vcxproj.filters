@@ -21,12 +21,18 @@
     <ClCompile Include="RngTester.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="aes_file_encryption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RngTester.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AesFileEncryptor.h">
+    <ClInclude Include="error_codes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="aes_file_encryption.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
