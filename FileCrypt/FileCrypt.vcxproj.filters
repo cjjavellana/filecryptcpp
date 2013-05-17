@@ -21,7 +21,10 @@
     <ClCompile Include="RngTester.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="aes_file_encryption.cpp">
+    <ClCompile Include="file_encryption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="key_generator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,7 +35,10 @@
     <ClInclude Include="error_codes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="aes_file_encryption.h">
+    <ClInclude Include="file_encryption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="key_generator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,12 +12,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileCrypt_Main.cpp" />
+    <ClCompile Include="key_generator.cpp" />
     <ClCompile Include="RngTester.cpp" />
-    <ClCompile Include="aes_file_encryption.cpp" />
+    <ClCompile Include="file_encryption.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aes_file_encryption.h" />
+    <ClInclude Include="file_encryption.h" />
     <ClInclude Include="error_codes.h" />
+    <ClInclude Include="key_generator.h" />
     <ClInclude Include="RngTester.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -5,7 +5,7 @@
 #include "aes.h"
 #include "files.h"
 #include "filters.h"
-
+#include "key_generator.h"
 
 // Crypto++ Library
 #ifdef _DEBUG
@@ -17,6 +17,7 @@
 using namespace std;
 using namespace FileCryptTests;
 using namespace CryptoPP;
+using namespace filecrypt::keygen;
 
 int main(int argc, char* argv[]) 
 {
@@ -54,5 +55,13 @@ int main(int argc, char* argv[])
 	delete pDecryptor;
 	delete pCbcDecryptor;
 	
+	AesKeyGenerator *pKeyGen = new AesKeyGenerator();
+	byte *pAesKey = pKeyGen->GenerateKey();
+	byte *pIv = pKeyGen->GenerateIv();
+	cout << "Key Gen: " << *pAesKey << *pIv;
+	
+	byte *key256 = new byte, *iv256 = new byte;
+	pKeyGen->GenerateKeyAndIv(key256, iv256);
+
 	return 0;
 }
