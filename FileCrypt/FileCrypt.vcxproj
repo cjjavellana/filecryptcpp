@@ -12,15 +12,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileCrypt_Main.cpp" />
-    <ClCompile Include="key_generator.cpp" />
-    <ClCompile Include="RngTester.cpp" />
-    <ClCompile Include="file_encryption.cpp" />
+    <ClCompile Include="keygenerators.cpp" />
+    <ClCompile Include="rngtests.cpp" />
+    <ClCompile Include="fileencryptors.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="file_encryption.h" />
+    <ClInclude Include="fileencryptors.h" />
     <ClInclude Include="error_codes.h" />
-    <ClInclude Include="key_generator.h" />
-    <ClInclude Include="RngTester.h" />
+    <ClInclude Include="keygenerators.h" />
+    <ClInclude Include="rngtests.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0B12032D-A0B6-48F5-8B14-B46FBE49AF99}</ProjectGuid>

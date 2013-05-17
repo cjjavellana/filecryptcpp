@@ -18,27 +18,27 @@
     <ClCompile Include="FileCrypt_Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RngTester.cpp">
+    <ClCompile Include="keygenerators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="file_encryption.cpp">
+    <ClCompile Include="fileencryptors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="key_generator.cpp">
+    <ClCompile Include="rngtests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RngTester.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="error_codes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="file_encryption.h">
+    <ClInclude Include="keygenerators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="key_generator.h">
+    <ClInclude Include="fileencryptors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rngtests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

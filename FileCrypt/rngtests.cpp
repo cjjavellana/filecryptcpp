@@ -1,5 +1,5 @@
 #include <iostream>
-#include "RngTester.h"
+#include "rngtests.h"
 #include "osrng.h"
 
 using namespace FileCryptTests;

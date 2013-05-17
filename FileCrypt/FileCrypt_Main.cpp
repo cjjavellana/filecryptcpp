@@ -1,11 +1,21 @@
 #include <iostream>
-#include "RngTester.h"
-#include "osrng.h"
+using std::cout;
+
 #include "modes.h"
+using CryptoPP::CBC_Mode_ExternalCipher;
+
 #include "aes.h"
+using CryptoPP::AES;
+
 #include "files.h"
+using CryptoPP::FileSource;
+
 #include "filters.h"
-#include "key_generator.h"
+using CryptoPP::StreamTransformationFilter;
+
+#include "keygenerators.h"
+using filecrypt::keygen::AesKeyGenerator ;
+
 
 // Crypto++ Library
 #ifdef _DEBUG
@@ -14,29 +24,20 @@
 #  pragma comment ( lib, "cryptlib" )
 #endif
 
-using namespace std;
-using namespace FileCryptTests;
-using namespace CryptoPP;
-using namespace filecrypt::keygen;
 
 int main(int argc, char* argv[]) 
 {
-	//RngTester *tester = new RngTester();
-	//tester->init_rng();
-	//delete tester;
+	byte pAesKey[AES::MAX_KEYLENGTH], pAesIv[AES::BLOCKSIZE];
 
-	byte key[AES::MAX_KEYLENGTH], iv[AES::BLOCKSIZE];
-	
-	memset(key, 0xFF, AES::MAX_KEYLENGTH);
-	memset(iv, 0x00, AES::BLOCKSIZE);
+	AesKeyGenerator *pKeyGen = new AesKeyGenerator(AES::MAX_KEYLENGTH, AES::BLOCKSIZE);
+	pKeyGen->GenerateKeyAndIv(pAesKey, pAesIv);
 
-	AES::Encryption *pAes = new AES::Encryption(key, AES::MAX_KEYLENGTH);
-	CBC_Mode_ExternalCipher::Encryption *pCbcEncryption = new CBC_Mode_ExternalCipher::Encryption(*pAes, iv);
+	AES::Encryption *pAes = new AES::Encryption(pAesKey, AES::MAX_KEYLENGTH);
+	CBC_Mode_ExternalCipher::Encryption *pCbcEncryption = new CBC_Mode_ExternalCipher::Encryption(*pAes, pAesIv);
 
 	char *pInputFile = "C:/shared.log";
 	char *pOutputFile = "C:/shared_out.log";
 	
-	//StreamTransformationFilter *pFilter = new StreamTransformationFilter(*pCbcEncryption, new StringSink(outputText));
 	StreamTransformationFilter *pFilter = new StreamTransformationFilter(*pCbcEncryption, new FileSink((const char *)pOutputFile, true));
 
 	FileSource *pFileSource = new FileSource((const char *)pInputFile, true, pFilter);
@@ -45,8 +46,8 @@ int main(int argc, char* argv[])
 	delete pCbcEncryption;
 	delete pFileSource;
 
-	AES::Decryption *pDecryptor = new AES::Decryption(key, AES::MAX_KEYLENGTH);
-	CBC_Mode_ExternalCipher::Decryption *pCbcDecryptor = new CBC_Mode_ExternalCipher::Decryption(*pDecryptor, iv);
+	AES::Decryption *pDecryptor = new AES::Decryption(pAesKey, AES::MAX_KEYLENGTH);
+	CBC_Mode_ExternalCipher::Decryption *pCbcDecryptor = new CBC_Mode_ExternalCipher::Decryption(*pDecryptor, pAesIv);
 
 	const char *pDecryptedFile = "C:/decrypted.log";
 	StreamTransformationFilter *pDecryptionFilter = new StreamTransformationFilter(*pCbcDecryptor, new FileSink(pDecryptedFile, true));
@@ -54,14 +55,9 @@ int main(int argc, char* argv[])
 
 	delete pDecryptor;
 	delete pCbcDecryptor;
+
+	pKeyGen->~AesKeyGenerator();
 	
-	AesKeyGenerator *pKeyGen = new AesKeyGenerator();
-	byte *pAesKey = pKeyGen->GenerateKey();
-	byte *pIv = pKeyGen->GenerateIv();
-	cout << "Key Gen: " << *pAesKey << *pIv;
-	
-	byte *key256 = new byte, *iv256 = new byte;
-	pKeyGen->GenerateKeyAndIv(key256, iv256);
 
 	return 0;
 }

@@ -1,4 +1,4 @@
-#include "key_generator.h"
+#include "keygenerators.h"
 
 using namespace filecrypt::keygen;
 
@@ -22,4 +22,9 @@ void AesKeyGenerator::GenerateKeyAndIv(byte *key, byte *iv)
 {
 	rnd->GenerateBlock(key, this->key_length);
 	rnd->GenerateBlock(iv, this->iv_length);
+}
+
+AesKeyGenerator::~AesKeyGenerator()
+{
+	delete rnd;
 }
