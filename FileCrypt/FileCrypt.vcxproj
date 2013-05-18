@@ -17,8 +17,11 @@
     <ClCompile Include="fileencryptors.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bmh.h" />
     <ClInclude Include="fileencryptors.h" />
     <ClInclude Include="error_codes.h" />
+    <ClInclude Include="hexutils.h" />
+    <ClInclude Include="keyextractor.h" />
     <ClInclude Include="keygenerators.h" />
     <ClInclude Include="rngtests.h" />
   </ItemGroup>

@@ -14,8 +14,8 @@ namespace filecrypt
 		class AesFileEncryptor
 		{
 		public:
-			AesFileEncryptor();
-			~AesFileEncryptor();
+			AesFileEncryptor(){};
+			~AesFileEncryptor(){};
 			void EncryptFile(const char *fileToEncrypt, FileSink *pOutputFile, const byte *key, const byte *iv);
 			void DecryptFile(const char *fileToDecrypt, FileSink *pDecryptedFile, const byte *key, byte *iv);
 		private:

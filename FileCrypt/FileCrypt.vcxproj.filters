@@ -41,5 +41,14 @@
     <ClInclude Include="rngtests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="hexutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="keyextractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bmh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
