@@ -13,15 +13,17 @@
   <ItemGroup>
     <ClCompile Include="FileCrypt_Main.cpp" />
     <ClCompile Include="keygenerators.cpp" />
+    <ClCompile Include="keymgt.cpp" />
     <ClCompile Include="rngtests.cpp" />
     <ClCompile Include="fileencryptors.cpp" />
+    <ClCompile Include="rsakeygen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bmh.h" />
     <ClInclude Include="fileencryptors.h" />
     <ClInclude Include="error_codes.h" />
     <ClInclude Include="hexutils.h" />
-    <ClInclude Include="keyextractor.h" />
+    <ClInclude Include="keymgt.h" />
     <ClInclude Include="keygenerators.h" />
     <ClInclude Include="rngtests.h" />
   </ItemGroup>

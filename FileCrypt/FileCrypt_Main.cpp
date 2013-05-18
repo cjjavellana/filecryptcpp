@@ -15,13 +15,17 @@ using CryptoPP::FileSource;
 using CryptoPP::StreamTransformationFilter;
 
 #include "keygenerators.h"
-using filecrypt::keygen::AesKeyGenerator ;
+using filecrypt::keygen::AesKeyGenerator;
+using filecrypt::keygen::RsaKeyGenerator;
 
 #include "fileencryptors.h"
 using filecrypt::encryptors::AesFileEncryptor;
 
-#include "hexutils.h"
-using filecrypt::utils::HexUtils;
+#include "keymgt.h"
+using filecrypt::keymgt::EncryptionKeyManager;
+
+#include "rsa.h"
+using CryptoPP::RSA;
 
 #include <regex>
 
@@ -53,28 +57,26 @@ int main(int argc, char* argv[])
 
 	cout << "Writing encryption key" << endl;
 
-	//append aes key to the end of the encrypted file
-	//aes key can be found in the last 32 bytes of the encrypted file
-	ofstream *pEncryptedFile = new ofstream(pOutputFile, ios::out | ios::app | ios::binary);
-	//file successfully opened
-	if(pEncryptedFile->is_open())
-	{
-		cout << "Writing Encryption Key: " << HexUtils::hexify(pAesKey) << "; IV: " << HexUtils::hexify(pAesIv) << endl;
-		byte ekey_marker[] = {0x41,0x41,0x41};
-		pEncryptedFile->write((const char *)ekey_marker, 3);
-		pEncryptedFile->write((const char *)pAesKey, AES::MAX_KEYLENGTH);
-
-		byte iv_marker[] = {0x42,0x42,0x42};
-		pEncryptedFile->write((const char *)iv_marker, 3);
-		pEncryptedFile->write((const char *)pAesIv, AES::BLOCKSIZE);
-
-		pEncryptedFile->close();
-	}
+	EncryptionKeyManager *pKeyManager = new EncryptionKeyManager();
+	cout << "Writing Encryption Key: " << HexUtils::hexify(pAesKey) << "; IV: " << HexUtils::hexify(pAesIv) << endl;
+	pKeyManager->WriteAesKeyAndIvIntoEncryptedFile(pOutputFile,pAesKey,pAesIv,AES::MAX_KEYLENGTH,AES::BLOCKSIZE);
+	delete pKeyManager;
 
 	cout << "Destroying objects..." << endl;
-	delete pEncryptedFile;
 	pKeyGen->~AesKeyGenerator();
+
+	cout << "Generate Rsa Keys..." << endl;
 	
+	RSA::PublicKey *pPublicKey = new RSA::PublicKey();
+	RSA::PrivateKey *pPrivateKey = new RSA::PrivateKey();
+
+	cout << "Writing keys to disk..." << endl;
+	RsaKeyGenerator *pRsaKeyGen = new RsaKeyGenerator();
+	
+	pRsaKeyGen->GenerateRsaKeys(pPrivateKey, pPublicKey, 3072);
+	pRsaKeyGen->SavePrivateKey("C:\\rsa_priv", *pPrivateKey);
+	pRsaKeyGen->SavePublicKey("C:\\rsa.pub", *pPublicKey);
+
 	/**
 	cout << "File Decryption Initiated..." << endl;
 	ifstream *pFileToDecrypt = new ifstream(pOutputFile, ios::in|ios::binary|ios::ate);

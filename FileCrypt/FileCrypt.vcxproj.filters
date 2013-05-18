@@ -27,6 +27,12 @@
     <ClCompile Include="rngtests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="keymgt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rsakeygen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="error_codes.h">
@@ -44,10 +50,10 @@
     <ClInclude Include="hexutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="keyextractor.h">
+    <ClInclude Include="bmh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bmh.h">
+    <ClInclude Include="keymgt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
