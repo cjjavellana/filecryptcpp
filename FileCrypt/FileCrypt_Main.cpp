@@ -22,7 +22,7 @@ using filecrypt::keygen::RsaKeyGenerator;
 using filecrypt::encryptors::AesFileEncryptor;
 
 #include "keymgt.h"
-using filecrypt::keymgt::EncryptionKeyManager;
+using filecrypt::keymgt::AESKeyManager;
 
 #include "rsa.h"
 using CryptoPP::RSA;
@@ -55,18 +55,8 @@ int main(int argc, char* argv[])
 	pAesFileEncrytor->EncryptFile(pInputFile,  new FileSink((const char *)pOutputFile, true), pAesKey, pAesIv);
 	//pAesFileEncrytor->DecryptFile(pOutputFile, new FileSink(pDecryptedFile, true), pAesKey, pAesIv);
 
-	cout << "Writing encryption key" << endl;
-
-	EncryptionKeyManager *pKeyManager = new EncryptionKeyManager();
-	cout << "Writing Encryption Key: " << HexUtils::hexify(pAesKey) << "; IV: " << HexUtils::hexify(pAesIv) << endl;
-	pKeyManager->WriteAesKeyAndIvIntoEncryptedFile(pOutputFile,pAesKey,pAesIv,AES::MAX_KEYLENGTH,AES::BLOCKSIZE);
-	delete pKeyManager;
-
-	cout << "Destroying objects..." << endl;
-	pKeyGen->~AesKeyGenerator();
-
+	
 	cout << "Generate Rsa Keys..." << endl;
-
 	RSA::PublicKey *pPublicKey = new RSA::PublicKey();
 	RSA::PrivateKey *pPrivateKey = new RSA::PrivateKey();
 	RsaKeyGenerator *pRsaKeyGen = new RsaKeyGenerator();
@@ -74,6 +64,15 @@ int main(int argc, char* argv[])
 	pRsaKeyGen->GenerateRsaKeys(*pPrivateKey, *pPublicKey, 2048);
 	pRsaKeyGen->SavePrivateKey("C:\\ppk1.key", *pPrivateKey);
 	pRsaKeyGen->SavePublicKey("C:\\pub1.pub", *pPublicKey);
+
+	cout << "Writing encryption key" << endl;
+	AESKeyManager *pKeyManager = new AESKeyManager();
+	cout << "Writing Encryption Key: " << HexUtils::hexify(pAesKey) << "; IV: " << HexUtils::hexify(pAesIv) << endl;
+	pKeyManager->EncryptAesKeyAndIvAndEmbedToFile(pPublicKey,pOutputFile,pAesKey,pAesIv,AES::MAX_KEYLENGTH,AES::BLOCKSIZE);
+	delete pKeyManager;
+
+	cout << "Destroying objects..." << endl;
+	pKeyGen->~AesKeyGenerator();
 
 	AutoSeededRandomPool rng;
     RSAES_OAEP_SHA_Encryptor e(*pPublicKey);
