@@ -19,7 +19,7 @@ namespace filecrypt
 				std::string result(2 * size_of_x, 0);
 				unsigned char const * const p = reinterpret_cast<unsigned char const *>(&x);
 
-				for (std::size_t i = 0; i != size_of_x; ++i)
+				for (std::size_t i = 0; i != size_of_x; i ++)
 				{
 					result[2 * i    ] = alphabet[p[i] / 16];
 					result[2 * i + 1] = alphabet[p[i] % 16];

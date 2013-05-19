@@ -66,16 +66,50 @@ int main(int argc, char* argv[])
 	pKeyGen->~AesKeyGenerator();
 
 	cout << "Generate Rsa Keys..." << endl;
-	
+
 	RSA::PublicKey *pPublicKey = new RSA::PublicKey();
 	RSA::PrivateKey *pPrivateKey = new RSA::PrivateKey();
-
-	cout << "Writing keys to disk..." << endl;
 	RsaKeyGenerator *pRsaKeyGen = new RsaKeyGenerator();
-	
-	pRsaKeyGen->GenerateRsaKeys(pPrivateKey, pPublicKey, 3072);
-	pRsaKeyGen->SavePrivateKey("C:\\rsa_priv", *pPrivateKey);
-	pRsaKeyGen->SavePublicKey("C:\\rsa.pub", *pPublicKey);
+
+	pRsaKeyGen->GenerateRsaKeys(*pPrivateKey, *pPublicKey, 2048);
+	pRsaKeyGen->SavePrivateKey("C:\\ppk1.key", *pPrivateKey);
+	pRsaKeyGen->SavePublicKey("C:\\pub1.pub", *pPublicKey);
+
+	AutoSeededRandomPool rng;
+    RSAES_OAEP_SHA_Encryptor e(*pPublicKey);
+    
+
+	static const int SIZE = AES::MAX_KEYLENGTH; 
+	SecByteBlock plaintext(SIZE); 
+	//byte block[SIZE]; 
+	//rng.GenerateBlock(block, SIZE); 
+	memcpy(plaintext, pAesKey, SIZE); 
+	for(int x = 0; x < SIZE; x++) { 
+		printf("%X%X", (pAesKey[x] & 240) >> 4, (pAesKey[x] & 15)); 
+	} 
+	cout << endl; 
+	size_t ecl = e.CiphertextLength(plaintext.size()); 
+	SecByteBlock ciphertext(ecl); 
+	e.Encrypt(rng, plaintext, plaintext.size(), ciphertext); 
+
+	cout << "Encrypted AES Key: " << HexUtils::hexify(ciphertext, ciphertext.size()) << endl;
+
+	RSAES_OAEP_SHA_Decryptor d(*pPrivateKey);
+
+	size_t dpl = d.MaxPlaintextLength(ciphertext.size()); 
+	SecByteBlock recovered(d.MaxPlaintextLength(ciphertext.size())); 
+	DecodingResult result = d.Decrypt(rng, ciphertext, ciphertext.size(), recovered); 
+	recovered.resize(result.messageLength); 
+	assert(plaintext == recovered); 
+	for(int x = 0; x < SIZE; x++) { 
+		printf("%X%X", (plaintext[x] & 240) >> 4, (plaintext[x] & 15)); 
+	} 
+	cout << endl;
+
+    //CryptoPP::RSAES_OAEP_SHA_Decryptor d(*pPrivateKey);
+    //CryptoPP::StringSource( cipher, true, new CryptoPP::PK_DecryptorFilter( rng, d, new CryptoPP::StringSink( decrypted_data )));
+
+	//cout << cipher;
 
 	/**
 	cout << "File Decryption Initiated..." << endl;
