@@ -43,11 +43,7 @@ namespace filecrypt
 		public:
 			void GenerateRsaKeys(RSA::PrivateKey& pPrivateKey, RSA::PublicKey& pPublicKey, const unsigned int key_length = 2048);
 			void GenerateDsaKeys(DSA::PrivateKey& pPrivateKey, DSA::PublicKey& pPublicKey, const unsigned int key_length = 2048);
-			void SavePrivateKey(const char *filename, const PrivateKey& pPrivateKey);
-			void SavePublicKey(const char *filename, const PublicKey& pPublicKey);
-		private:
-			void SaveKeyBase64(const char *filename, const BufferedTransformation& bt);
-			void SaveKey(const char *filename, const BufferedTransformation& bt);
+			
 		};
 	};
 }

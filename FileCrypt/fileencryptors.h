@@ -19,8 +19,7 @@ namespace filecrypt
 			void EncryptFile(const char *fileToEncrypt, FileSink *pOutputFile, const byte *key, const byte *iv);
 			void DecryptFile(const char *fileToDecrypt, FileSink *pDecryptedFile, const byte *key, byte *iv);
 		private:
-			void ValidateKeyAndIvLength(const byte *key, const byte *iv);
-			void ValidateIfFileExist(const char *location);
+			
 		};
 	};
 }

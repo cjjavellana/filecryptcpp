@@ -22,7 +22,7 @@ using filecrypt::keygen::RsaKeyGenerator;
 using filecrypt::encryptors::AesFileEncryptor;
 
 #include "keymgt.h"
-using filecrypt::keymgt::AESKeyManager;
+using filecrypt::keymgt::KeyManager;
 
 #include "rsa.h"
 using CryptoPP::RSA;
@@ -62,13 +62,14 @@ int main(int argc, char* argv[])
 	RsaKeyGenerator *pRsaKeyGen = new RsaKeyGenerator();
 
 	pRsaKeyGen->GenerateRsaKeys(*pPrivateKey, *pPublicKey, 2048);
-	pRsaKeyGen->SavePrivateKey("C:\\ppk1.key", *pPrivateKey);
-	pRsaKeyGen->SavePublicKey("C:\\pub1.pub", *pPublicKey);
+	
 
 	cout << "Writing encryption key" << endl;
-	AESKeyManager *pKeyManager = new AESKeyManager();
+	KeyManager *pKeyManager = new KeyManager();
 	cout << "Writing Encryption Key: " << HexUtils::hexify(pAesKey) << "; IV: " << HexUtils::hexify(pAesIv) << endl;
 	pKeyManager->EncryptAesKeyAndIvAndEmbedToFile(pPublicKey,pOutputFile,pAesKey,pAesIv,AES::MAX_KEYLENGTH,AES::BLOCKSIZE);
+	pKeyManager->SavePrivateKey("C:\\ppk1.key", *pPrivateKey);
+	pKeyManager->SavePublicKey("C:\\pub1.pub", *pPublicKey);
 	delete pKeyManager;
 
 	cout << "Destroying objects..." << endl;
@@ -135,6 +136,7 @@ int main(int argc, char* argv[])
 	}
 	delete pFileToDecrypt;
 	*/
+	
 	return 0;
 }
 

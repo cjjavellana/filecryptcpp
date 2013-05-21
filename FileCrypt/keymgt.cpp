@@ -1,7 +1,7 @@
 #include "keymgt.h"
-using filecrypt::keymgt::AESKeyManager;
+using filecrypt::keymgt::KeyManager;
 
-void AESKeyManager::EncryptAesKeyAndIvAndEmbedToFile(const RSA::PublicKey *pRsaPublicKey, const char *encryptedFile, const byte *key, 
+void KeyManager::EncryptAesKeyAndIvAndEmbedToFile(const RSA::PublicKey *pRsaPublicKey, const char *encryptedFile, const byte *key, 
 					const byte *iv, const size_t key_size, const size_t block_size)
 {
 	AutoSeededRandomPool *rng = new AutoSeededRandomPool();
@@ -22,7 +22,7 @@ void AESKeyManager::EncryptAesKeyAndIvAndEmbedToFile(const RSA::PublicKey *pRsaP
 	this->EmbedAesKeyAndIvToFile(encryptedFile, encrypted_aes_key, encrypted_aes_iv, ecl, ecl_iv);
 }
 
-void AESKeyManager::EmbedAesKeyAndIvToFile(const char *encryptedFile, const byte *key, 
+void KeyManager::EmbedAesKeyAndIvToFile(const char *encryptedFile, const byte *key, 
 					const byte *iv, const size_t key_size, const size_t block_size)
 {
 		//append aes key to the end of the encrypted file
@@ -31,16 +31,48 @@ void AESKeyManager::EmbedAesKeyAndIvToFile(const char *encryptedFile, const byte
 		//file successfully opened
 		if(pEncryptedFile->is_open())
 		{
-			byte ekey_marker[] = {0x41,0x41,0x41};
-			byte iv_marker[] = {0x42,0x42,0x42};
+			const byte ekey_marker[] = {0x41,0x41,0x41};
 			
 			pEncryptedFile->write((const char *)ekey_marker, 3);
 			pEncryptedFile->write((const char *)key, key_size);
-			pEncryptedFile->write((const char *)iv_marker, 3);
+			pEncryptedFile->write((const char *)ekey_marker, 3);
 			pEncryptedFile->write((const char *)iv, block_size);
 			
 			pEncryptedFile->close();
 		}
 
 		delete pEncryptedFile;
+}
+
+void KeyManager::SavePrivateKey(const char *filename, const PrivateKey& pPrivateKey)
+{
+	ByteQueue *queue = new ByteQueue();
+    pPrivateKey.Save(*queue);
+
+    this->SaveKeyBase64(filename, *queue);
+}
+
+void KeyManager::SavePublicKey(const char *filename, const PublicKey& pPublicKey)
+{
+	ByteQueue *queue = new ByteQueue();
+    pPublicKey.Save(*queue);
+
+    this->SaveKeyBase64(filename, *queue);
+}
+
+void KeyManager::SaveKeyBase64(const char *filename, const BufferedTransformation &bt)
+{
+	Base64Encoder encoder;
+
+    bt.CopyTo(encoder);
+    encoder.MessageEnd();
+
+    SaveKey(filename, encoder);
+}
+
+void KeyManager::SaveKey(const char *filename, const BufferedTransformation &bt)
+{
+	FileSink *fs = new FileSink(filename);
+	bt.CopyTo(*fs);
+	fs->MessageEnd();
 }
