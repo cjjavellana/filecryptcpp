@@ -27,6 +27,22 @@ namespace filecrypt
 
 				return result;
 			};
+			
+			static string to_hex(const unsigned char *value, const unsigned int len){
+				char const alphabet[] = "0123456789ABCDEF";
+
+				std::string result(3 * len, 0);
+				//unsigned char const * const p = reinterpret_cast<unsigned char const *>(&x);
+
+				for (std::size_t i = 0; i !=  len; i ++)
+				{
+					result[3 * i    ] = alphabet[(byte)value[i] / 16];
+					result[3 * i + 1] = alphabet[(byte)value[i] % 16];
+					result[3 * i + 2] = ' ';
+				}
+
+				return result;
+			};
 		};
 	}
 }

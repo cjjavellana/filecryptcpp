@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\constants">
+      <UniqueIdentifier>{ce4cb184-11e4-4e0f-a003-4aaa12736f2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileCrypt_Main.cpp">
@@ -49,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="keymgt.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="constants.h">
+      <Filter>Header Files\constants</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

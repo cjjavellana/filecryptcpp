@@ -65,13 +65,16 @@ int main(int argc, char* argv[])
 	
 
 	cout << "Writing encryption key" << endl;
-	KeyManager *pKeyManager = new KeyManager();
+	KeyManager pKeyManager;
 	cout << "Writing Encryption Key: " << HexUtils::hexify(pAesKey) << "; IV: " << HexUtils::hexify(pAesIv) << endl;
-	pKeyManager->EncryptAesKeyAndIvAndEmbedToFile(pPublicKey,pOutputFile,pAesKey,pAesIv,AES::MAX_KEYLENGTH,AES::BLOCKSIZE);
-	pKeyManager->SavePrivateKey("C:\\ppk1.key", *pPrivateKey);
-	pKeyManager->SavePublicKey("C:\\pub1.pub", *pPublicKey);
-	delete pKeyManager;
+	pKeyManager.EncryptAesKeyAndIvAndEmbedToFile(pPublicKey,pOutputFile,pAesKey,pAesIv,AES::MAX_KEYLENGTH,AES::BLOCKSIZE);
+	
+	pKeyManager.SavePrivateKey("C:\\ppk1.key", *pPrivateKey);
+	pKeyManager.SavePublicKey("C:\\pub1.pub", *pPublicKey);
 
+	pKeyManager.RecoverAesKeyAndIv(pOutputFile, "C:\\ppk1.key", pAesKey, pAesIv);
+
+	
 	cout << "Destroying objects..." << endl;
 	pKeyGen->~AesKeyGenerator();
 
@@ -92,7 +95,7 @@ int main(int argc, char* argv[])
 	SecByteBlock ciphertext(ecl); 
 	e.Encrypt(rng, plaintext, plaintext.size(), ciphertext); 
 
-	cout << "Encrypted AES Key: " << HexUtils::hexify(ciphertext, ciphertext.size()) << endl;
+	cout << "Encrypted AES Key: " << HexUtils::to_hex(ciphertext.data(), ciphertext.size()) << endl;
 
 	RSAES_OAEP_SHA_Decryptor d(*pPrivateKey);
 
@@ -136,7 +139,7 @@ int main(int argc, char* argv[])
 	}
 	delete pFileToDecrypt;
 	*/
-	
+
 	return 0;
 }
 

@@ -18,6 +18,7 @@ using filecrypt::utils::HexUtils;
 #include "rsa.h"
 using CryptoPP::RSA;
 using CryptoPP::RSAES_OAEP_SHA_Encryptor;
+using CryptoPP::RSAES_OAEP_SHA_Decryptor;
 
 #include "osrng.h"
 using CryptoPP::AutoSeededRandomPool;
@@ -32,6 +33,9 @@ using CryptoPP::PrivateKey;
 using CryptoPP::PublicKey;
 using CryptoPP::ByteQueue;
 using CryptoPP::Base64Encoder;
+using CryptoPP::Base64Decoder;
+using CryptoPP::FileSource;
+using CryptoPP::DecodingResult;
 
 namespace filecrypt
 {
@@ -50,10 +54,19 @@ namespace filecrypt
 
 			void SavePrivateKey(const char *filename, const PrivateKey& pPrivateKey);
 			void SavePublicKey(const char *filename, const PublicKey& pPublicKey);
+			
+			void LoadPrivateKey(const string &filename, PrivateKey &privateKey);
+			void LoadPublicKey(const string &filename, PublicKey &publicKey);
 
+			//Recover the AES Key and IV used to encrypted the file at filename
+			// private_key_file - points to the file location of the private key to be used to decrypt the 
+			//	embedded keys in the encrypted file
+			void RecoverAesKeyAndIv(const char *filename, const char *private_key_file, byte *key, byte *iv);
 		private:
 			void SaveKeyBase64(const char *filename, const BufferedTransformation& bt);
+			void LoadKeyBase64(const string &filename, BufferedTransformation& bt);
 			void SaveKey(const char *filename, const BufferedTransformation& bt);
+			void LoadKey(const string &filename, BufferedTransformation &bt);
 		};
 	}
 }
